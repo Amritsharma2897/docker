@@ -41,7 +41,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     services:
-      my-test-app:
+      automation:
         image: automation
         ports:
           - 8080:8080
