@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       automation:
-        image: automation
+        image: 4411d01f9d8f/automation:latest
         ports:
           - 8080:8080
     steps:
