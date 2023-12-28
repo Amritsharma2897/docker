@@ -1,7 +1,7 @@
 # filename: dockerfile
 
 # Base image
-FROM node:20
+FROM ubuntu:16.04
 
 # Get the latest version of Playwright
 FROM mcr.microsoft.com/playwright:v1.40.1-jammy
