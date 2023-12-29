@@ -70,7 +70,7 @@ jobs:
         run: sleep 10
 
       - name: Retrieve Test Reports
-        run: docker cp test-container:/path/to/test/reports ./test-reports
+        run: docker cp test-container:/app/tests/reports ./test-reports
 
       - name: Cleanup
         run: docker rm -f test-container
