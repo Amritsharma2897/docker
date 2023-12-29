@@ -44,35 +44,34 @@ on:
 
 jobs:
   test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container: [automation1, automation2]
-
+    services:
+      automation1:
+        image: test305/automation:latest
+        ports:
+          - 8081:80
+      automation2:
+        image: test305/automation:latest
+        ports:
+          - 8082:80
     steps:
       - uses: actions/checkout@v3
-
       - name: Docker Compose up
         run: docker-compose up -d
-
       - name: Wait for services to be ready
         run: sleep 10  # Adjust the sleep duration based on your application's startup time
-
       - name: Install dependencies
         run: npm ci
-
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-
       - name: Run Playwright tests
         run: npx playwright test
-
       - name: Docker Compose down
         run: docker-compose down
-
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-${{ matrix.container }}
+          name: playwright-report
           path: playwright-report/
           retention-days: 30
