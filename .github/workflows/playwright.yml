@@ -49,12 +49,6 @@ jobs:
       matrix:
         container: [automation1, automation2]
 
-    services:
-      ${{ matrix.container }}:
-        image: test305/automation:latest
-        ports:
-          - ${{ matrix.container == 'automation1' ? '8081:80' : '8082:80' }}
-
     steps:
       - uses: actions/checkout@v3
 
