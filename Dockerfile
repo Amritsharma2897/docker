@@ -1,8 +1,5 @@
 # filename: dockerfile
 
-# Base image
-FROM node:20
-
 # Get the latest version of Playwright
 FROM mcr.microsoft.com/playwright:v1.40.1-jammy
 
