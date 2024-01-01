@@ -1,4 +1,41 @@
 
+# name: Playwright Tests
+
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+
+# jobs:
+#   test:
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     services:
+#       automation:
+#         image: test305/automation:latest
+#         ports:
+#           - 8080:8080
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+#       - name: Install dependencies
+#         run: npm ci
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+#       - name: Build Docker image
+#         run: docker build -t automation .
+#       - name: Run Playwright tests
+#         run: npx playwright test
+#       - uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: playwright-report
+#           path: playwright-report/
+#           retention-days: 30
+
 name: Playwright Tests
 
 on:
@@ -9,18 +46,26 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        container: [node:18, mcr.microsoft.com/playwright:v1.40.0-jammy]
+
+    timeout-minutes: 60
+
     services:
       automation:
         image: test305/automation:latest
         ports:
           - 8080:8080
+
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ matrix.container }}
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
@@ -35,111 +80,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
-# name: Run Playwright Tests
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Build Docker Image
-#         run: docker build -t test305/automation:latest .
-
-#       - name: Run Test Cases Inside Container
-#         run: |
-#           docker run -d \
-#             -p 8080:80 \
-#             -v ${{ github.workspace }}/tests:/app/tests \
-#             -e ENV_VARIABLE=value \
-#             --name test-container \
-#             test305/automation:latest
-
-#       - name: Wait for Test Completion
-#         run: sleep 10
-
-#       - name: Retrieve Test Reports
-#         run: docker cp test-container:/app/tests/reports ./test-reports
-
-#       - name: Cleanup
-#         run: docker rm -f test-container
-
-# name: Run Playwright Tests
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   playwright-test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Install Playwright dependencies
-#         run: npm ci
-
-#       - name: Run Playwright Tests
-#         run: npx playwright test
-#         env:
-#           CI: true
-
-#       - name: Copy Test Reports to GitHub Workspace
-#         run: cp -r /root/report $GITHUB_WORKSPACE
-
-#   docker-test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Build Docker Image
-#         run: docker build -t test305/automation:latest .
-
-#       - name: Run Test Cases Inside Container
-#         run: |
-#           docker run \
-#             -v ${{ github.workspace }}:/app \
-#             -e ENV_VARIABLE=value \
-#             --name test-container \
-#             test305/automation:latest
-
-#       - name: Wait for Test Completion
-#         run: sleep 10
-
-#       - name: Retrieve Test Reports
-#         run: docker cp test-container:/app/report ./test-reports
-
-#       - name: Cleanup
-#         run: docker rm -f test-container
-
-#   compare-reports:
-#     runs-on: ubuntu-latest
-
-#     needs: [playwright-test, docker-test]
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Compare Test Reports
-#         run: diff -r ${{ github.workspace }}/report ${{ github.workspace }}/test-reports
-
