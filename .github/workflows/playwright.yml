@@ -49,13 +49,17 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      automation:
+      docker:
         image: test305/automation:latest
         ports:
           - 8080:8080
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Pull Docker image
+        run: |
+          docker pull test305/automation:latest
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -68,15 +72,6 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Build Docker image
-        run: docker build -t automation .
-
-      - name: Push Docker image to repository
-        run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker tag automation $DOCKER_REGISTRY/automation
-          docker push $DOCKER_REGISTRY/automation
-
       - name: Run Playwright tests in multiple containers
         run: |
           for i in {1..5}; do
@@ -84,7 +79,7 @@ jobs:
               -v $(pwd):/app \
               -e ENV_VARIABLE=value \
               --name test-container-$i \
-              $DOCKER_REGISTRY/automation
+              test305/automation:latest
           done
 
       - name: Wait for Test Containers to Complete
