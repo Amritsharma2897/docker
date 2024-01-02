@@ -75,18 +75,19 @@ jobs:
       - name: Run Playwright tests in Docker container
         run: |
           docker run -d \
-            -v $(pwd):/app \
-            -e ENV_VARIABLE=value \
-            --name test-container \
-            test305/automation:latest \
-            npx playwright tests 
+          -v $(pwd)/local_directory:/app/playwright-report \
+          -e ENV_VARIABLE=value \
+          --name test-container \
+          test305/automation:latest \
+          npx playwright test
+
 
       - name: Wait for Test Container to Complete
         run: sleep 10
 
-      - name: Retrieve Test Report from the container
-        run: |
-          docker cp test-container:/app/playwright-report ./playwright-report
+      # - name: Retrieve Test Report from the container
+      #   run: |
+      #     docker cp test-container:/app/playwright-report ./playwright-report
 
       - name: Cleanup
         run: docker rm -f test-container
