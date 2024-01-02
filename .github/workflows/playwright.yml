@@ -75,11 +75,11 @@ jobs:
       - name: Run Playwright tests in Docker container
         run: |
           docker run -d \
-            -v $(pwd)/C:\Users\amrit.sharma\Downloads\playwright-report:/app/playwright-report \
-            -e ENV_VARIABLE=value \
-            --name test-container \
-            test305/automation:latest \
-            npx playwright test
+          -v $(pwd)/local_directory:/app/playwright-report \
+          -e ENV_VARIABLE=value \
+          --name test-container \
+          test305/automation:latest \
+          npx playwright test
 
       - name: Wait for Test Container to Complete
         run: sleep 10
