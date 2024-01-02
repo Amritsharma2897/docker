@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   automation:
-    image: automation
+    image: test305/automation:latest
     build:
       context: .
       dockerfile: ./Dockerfile
