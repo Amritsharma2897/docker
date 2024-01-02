@@ -72,34 +72,29 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests in multiple containers
+      - name: Run Playwright tests in Docker container
         run: |
-          for i in {1..5}; do
-            docker run -d \
-              -v $(pwd):/app \
-              -e ENV_VARIABLE=value \
-              --name test-container-$i \
-              test305/automation:latest
-          done
+          docker run -d \
+            -v $(pwd):/app \
+            -e ENV_VARIABLE=value \
+            --name test-container \
+            test305/automation:latest \
+            npx playwright tests 
 
-      - name: Wait for Test Containers to Complete
+      - name: Wait for Test Container to Complete
         run: sleep 10
 
-      - name: Retrieve Test Reports from all containers
+      - name: Retrieve Test Report from the container
         run: |
-          for i in {1..5}; do
-            docker cp test-container-$i:/app/playwright-report ./playwright-report-$i
-          done
+          docker cp test-container:/app/playwright-report ./playwright-report
 
       - name: Cleanup
-        run: |
-          for i in {1..5}; do
-            docker rm -f test-container-$i
-          done
+        run: docker rm -f test-container
 
-      - name: Upload Test Reports
+      - name: Upload Test Report
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-reports
+          name: playwright-report
           path: playwright-report/
           retention-days: 30
+
