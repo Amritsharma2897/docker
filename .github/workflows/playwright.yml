@@ -107,7 +107,6 @@ jobs:
           container-name: test-container-1
         container-2:
           container-name: test-container-2
-        # Add more containers as needed
 
     services:
       docker:
