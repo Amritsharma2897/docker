@@ -210,7 +210,7 @@ jobs:
             npx playwright test
 
       - name: Wait for Test Container to Complete
-        run: sleep 10
+        run: docker wait test-container
 
       - name: List contents of playwright-report directory
         run: docker exec test-container ls -R /app/playwright-report/
