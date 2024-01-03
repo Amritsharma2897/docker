@@ -144,6 +144,13 @@ jobs:
       - name: Wait for Test Container to Complete
         run: sleep 10
 
+      - name: Print Docker Container Logs
+        run: docker logs test-container
+
+      - name: Verify Playwright Reports Inside Docker Container
+        run: docker exec test-container ls -R /app/playwright-report/
+
+
       - name: List contents of the directory
         run: ls -R ${{ github.workspace }}/playwright-report/
 
