@@ -36,6 +36,59 @@
 #           path: playwright-report/
 #           retention-days: 30
 
+# name: Playwright Tests
+
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+
+#     services:
+#       docker:
+#         image: test305/automation:latest
+#         ports:
+#           - 8080:8080
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Pull Docker image
+#         run: |
+#           docker pull test305/automation:latest
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+
+#       - name: Run Playwright tests in Docker container
+#         run: |
+#           docker run -d \
+#           -v $(pwd)/local_directory:/app/playwright-report \
+#           -e ENV_VARIABLE=value \
+#           --name test-container \
+#           test305/automation:latest \
+#           npx playwright test
+
+#       - name: Wait for Test Container to Complete
+#         run: sleep 10
+#       - Akshay's Notion's rating page
+#         with:
+#           name: playwright-report
+#           path: playwright-report/
+#           retention-days: 30
+
 name: Playwright Tests
 
 on:
@@ -48,6 +101,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        container-1:
+          container-name: test-container-1
+        container-2:
+          container-name: test-container-2
+        # Add more containers as needed
+
     services:
       docker:
         image: test305/automation:latest
@@ -55,7 +116,8 @@ jobs:
           - 8080:8080
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Pull Docker image
         run: |
@@ -77,17 +139,32 @@ jobs:
           docker run -d \
           -v $(pwd)/local_directory:/app/playwright-report \
           -e ENV_VARIABLE=value \
-          --name test-container \
+          --name ${{ matrix.container-name }} \
           test305/automation:latest \
           npx playwright test
 
       - name: Wait for Test Container to Complete
         run: sleep 10
-      - name: Upload Test Report
+
+  aggregate-reports:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Aggregate Test Reports
+        run: |
+          # Implement code to aggregate test reports from all containers
+          # For example, you can use a tool like `cat` to concatenate the reports
+          cat local_directory/*.json > aggregated-report.json
+
+      - name: Upload Aggregated Report
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: playwright-aggregated-report
+          path: aggregated-report.json
           retention-days: 30
+
 
 
