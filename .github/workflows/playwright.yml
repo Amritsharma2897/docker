@@ -92,7 +92,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report
-          path: ${{ github.workspace }}/playwright-report/
+          path: C:\Users\amrit.sharma\Documents\git_test\docker\playwright-report
           retention-days: 30
 
 
