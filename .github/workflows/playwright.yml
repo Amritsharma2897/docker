@@ -218,6 +218,6 @@ jobs:
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-report
-          path: /docker/playwright-report/
-          retention-days: 30
+        name: playwright-report
+        path: /app/playwright-report/
+        retention-days: 30
