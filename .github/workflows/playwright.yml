@@ -209,11 +209,11 @@ jobs:
             test305/automation:latest \
             npx playwright test
 
+      - name: List contents of playwright-report directory
+        run: docker exec test-container ls -R /app/playwright-report/     
+
       - name: Wait for Test Container to Complete
         run: docker wait test-container
-
-      - name: List contents of playwright-report directory
-        run: docker exec test-container ls -R /app/playwright-report/
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
