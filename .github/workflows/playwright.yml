@@ -75,20 +75,25 @@ jobs:
       - name: Run Playwright tests in Docker container
         run: |
           docker run -d \
-          -v $(pwd)/local_directory:/app/playwright-report \
-          -e ENV_VARIABLE=value \
-          --name test-container \
-          test305/automation:latest \
-          npx playwright test
+            -v $(pwd)/playwright-report:/app/playwright-report \
+            -e ENV_VARIABLE=value \
+            --name test-container \
+            test305/automation:latest \
+            npx playwright test
 
       - name: Wait for Test Container to Complete
         run: sleep 10
-      -- name: Upload Test Report
-      uses: actions/upload-artifact@v3
-    with:
-    name: playwright-report
-    path: playwright-report/
-    retention-days: 30
+
+      - name: Cleanup
+        run: docker rm -f test-container
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
 
 
 
