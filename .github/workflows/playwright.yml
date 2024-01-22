@@ -1,40 +1,50 @@
 
-# name: Playwright Tests
+name: Playwright Tests
 
-# on:
-#   push:
-#     branches: [main, master]
-#   pull_request:
-#     branches: [main, master]
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
-# jobs:
-#   test:
-#     timeout-minutes: 60
-#     runs-on: ubuntu-latest
-#     services:
-#       automation:
-#         image: test305/automation:latest
-#         ports:
-#           - 8080:8080
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - name: Install dependencies
-#         run: npm ci
-#       - name: Install Playwright Browsers
-#         run: npx playwright install --with-deps
-#       - name: Build Docker image
-#         run: docker build -t automation .
-#       - name: Run Playwright tests
-#         run: npx playwright test
-#       - uses: actions/upload-artifact@v3
-#         if: always()
-#         with:
-#           name: playwright-report
-#           path: playwright-report/
-#           retention-days: 30
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    services:
+      automation:
+        image: test305/automation:latest
+        ports:
+          - 8080:8080
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      
+      - name: Build Docker image
+        run: docker build -t automation .
+      
+      - name: Run Playwright tests
+        run: npx playwright test
+      
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
 
 # name: Playwright Tests
 
@@ -164,60 +174,60 @@
 #           path: ${{ github.workspace }}/playwright-report/
 #           retention-days: 30
 
-name: Playwright Tests
+# name: Playwright Tests
 
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: test305/automation:latest
-        ports:
-          - 8080:8080
+#     services:
+#       docker:
+#         image: test305/automation:latest
+#         ports:
+#           - 8080:8080
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Pull Docker image
-        run: docker pull test305/automation:latest
+#       - name: Pull Docker image
+#         run: docker pull test305/automation:latest
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests in Docker container
-        run: |
-          docker run -d \
-            -v $(pwd)/playwright-report:/docker/playwright-report \
-            -e ENV_VARIABLE=value \
-            --name test-container \
-            test305/automation:latest \
-            npx playwright test
+#       - name: Run Playwright tests in Docker container
+#         run: |
+#           docker run -d \
+#             -v $(pwd)/playwright-report:/docker/playwright-report \
+#             -e ENV_VARIABLE=value \
+#             --name test-container \
+#             test305/automation:latest \
+#             npx playwright test
 
-      - name: List contents of playwright-report directory
-        run: docker exec test-container ls -R /app/playwright-report/     
+#       - name: List contents of playwright-report directory
+#         run: docker exec test-container ls -R /app/playwright-report/     
 
-      - name: Wait for Test Container to Complete
-        run: docker wait test-container
+#       - name: Wait for Test Container to Complete
+#         run: docker wait test-container
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: /app/playwright-report/
-          retention-days: 30
+#       - name: Upload Test Report
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: playwright-report
+#           path: /app/playwright-report/
+#           retention-days: 30

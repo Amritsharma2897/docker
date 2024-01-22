@@ -1,17 +1,17 @@
-version: '3.4'
+# version: '3.4'
 
-services:
-  automation:
-    image: test305/automation:latest
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    environment: 
-      NODE_ENV: production
-    ports:
-      - "3000"
-    deploy:
-      replicas: 3
+# services:
+#   automation:
+#     image: test305/automation:latest
+#     build:
+#       context: .
+#       dockerfile: ./Dockerfile
+#     environment: 
+#       NODE_ENV: production
+#     ports:
+#       - "3000"
+#     deploy:
+#       replicas: 3
 
 # version: '3'
 
@@ -37,3 +37,29 @@ services:
 #     command: ["npx", "playwright", "test"]
 #     ports:
 #       - "3002"
+
+version: "3.9"
+
+# Setup a dedicated network using bridge driver
+networks:
+  integration-test-network:
+    driver: bridge
+
+services:
+  test-app:
+    container_name: test-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - integration-test-network
+
+  integration-test:
+    container_name: integration-test
+    build:
+      context: .
+      dockerfile: Dockerfile.playwright
+    networks:
+      - integration-test-network
+    depends_on:
+      - test-app

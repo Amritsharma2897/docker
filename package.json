@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "docker-build-test": "docker build -f Dockerfile.playwright -t integration-test-image .",
+    "docker-run-test": "docker run --rm -t --network host integration-test-image",
+    "docker-compose-up": "docker-compose -f ./docker-compose.test.yml up --build"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.41.1",
     "@types/node": "^20.10.3"
   }
 }
