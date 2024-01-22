@@ -1,16 +1,16 @@
-
 name: Playwright Tests
-
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container: [container1, container2, container3]
     services:
       automation:
         image: test305/automation:latest
@@ -19,24 +19,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          
       - name: Install dependencies
         run: npm ci
-      
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      
       - name: Build Docker image
         run: docker build -t automation .
-      
       - name: Run Playwright tests
-        run: npx playwright test
-      
+        run: |
+          for container in ${{ matrix.container }}; do
+            docker run --rm -it --network host -v $PWD:/app -w /app $container npx playwright test
+          done
       - name: Upload Playwright report
         uses: actions/upload-artifact@v3
         if: always()
@@ -44,6 +41,53 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+
+# name: Playwright Tests
+
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+
+# jobs:
+#   test:
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     services:
+#       automation:
+#         image: test305/automation:latest
+#         ports:
+#           - 8080:8080
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+      
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+          
+#       - name: Install dependencies
+#         run: npm ci
+      
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+      
+#       - name: Build Docker image
+#         run: docker build -t automation .
+      
+#       - name: Run Playwright tests
+#         run: npx playwright test
+      
+#       - name: Upload Playwright report
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: playwright-report
+#           path: playwright-report/
+#           retention-days: 30
 
 
 # name: Playwright Tests
