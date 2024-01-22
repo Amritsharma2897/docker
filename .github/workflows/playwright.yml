@@ -29,10 +29,24 @@ jobs:
         run: npx playwright install --with-deps
       - name: Build Docker image
         run: docker build -t automation .
-      - name: Run Playwright tests
+      - name: Divide test cases equally among containers
+        run: |
+          test_files=$(find . -name "*.spec.ts")
+          total_files=$(echo "$test_files" | wc -l)
+          files_per_container=$((total_files / 3))
+          for i in $(seq 1 3); do
+            start=$((i * files_per_container - files_per_container + 1))
+            end=$((i * files_per_container))
+            if [ $i -eq 3 ]; then
+              end=$total_files
+            fi
+            echo "Container $i will run test cases from $start to $end"
+            echo "$test_files" | sed -n "${start},${end}p" > "container$i.txt"
+          done
+      - name: Run Playwright tests in containers
         run: |
           for container in ${{ matrix.container }}; do
-            docker run --rm -it --network host -v $PWD:/app -w /app $container npx playwright test
+            docker run --rm -it --network host -v $PWD:/app -w /app $container npx playwright test $(cat container${{ matrix.container }}.txt)
           done
       - name: Upload Playwright report
         uses: actions/upload-artifact@v3
