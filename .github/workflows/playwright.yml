@@ -25,7 +25,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Build Docker image
-        run: docker build -t automation .
+        run: docker build -t test305/automation:latest .
       - name: Run Playwright tests
         run: docker run -v $PWD:/app -w /app --network host automation npx playwright test
       - name: Upload Playwright report
