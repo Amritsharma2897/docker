@@ -69,8 +69,8 @@ jobs:
       - name: Upload Playwright report artifact
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-report
-          path: playwright-report-test/
+          name: playwright-report-test
+          path: playwright-report/
           retention-days: 30
 
   test_job_2:
