@@ -1,7 +1,6 @@
 {
   "name": "dummytesing",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "playwright test"
@@ -11,6 +10,11 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.41.1",
-    "@types/node": "^20.10.3"
-  }
+    "@types/node": "^20.10.3",
+    "playwright": "^1.41.1"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }
