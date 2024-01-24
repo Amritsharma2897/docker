@@ -137,10 +137,10 @@ jobs:
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: blob-report-${{ matrix.shardIndex }}
-          path: blob-report
+          path: playwright-report/
           retention-days: 1
 
   merge-reports:
@@ -160,10 +160,10 @@ jobs:
         run: npm ci
 
       - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          path: all-blob-reports
-          pattern: blob-report-*
+          path: playwright-report/
+          pattern: playwright-report-*
           merge-multiple: true
 
       - name: Merge into HTML Report
