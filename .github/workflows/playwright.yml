@@ -58,13 +58,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'  # Update this line to the desired Node.js version
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t test305/automation:latest .
+          docker push test305/automation:latest
 
-      - name: Run Playwright Tests
-        run: npx playwright test
+      - name: Set Chromium Version and Run Playwright Tests
+        run: |
+          docker run -it test305/automation:latest /bin/bash -c "\
+            npx playwright install-deps --chromium-version=1411.0 && \
+            npx playwright test"
 
 
 # name: Run Playwright Tests
