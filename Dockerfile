@@ -1,66 +1,25 @@
 # # Get the latest version of Playwright
-# Use an official Playwright Docker image as the base image
-FROM mcr.microsoft.com/playwright:bionic
+
+FROM mcr.microsoft.com/playwright:v1.41.1-jammy
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the package.json and package-lock.json to the container
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install project dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of your application code to the container
+RUN npx playwright install-deps
+
+# Copy the rest of the application files
 COPY . .
 
-# Run your Playwright tests
+# Set the entry point for the container
 CMD ["npx", "playwright", "test"]
 
 
-# FROM mcr.microsoft.com/playwright:v1.41.1-jammy
-
-# # Set the working directory
-# WORKDIR /app
-
-# # Copy package.json and package-lock.json
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install
-
-# RUN npx playwright install-deps
-
-# # Copy the rest of the application files
-# COPY . .
-
-# # Set the entry point for the container
-# CMD ["npx", "playwright", "test"]
-
-
-
-
-
-
-# # Get the latest version of Playwright
-# FROM mcr.microsoft.com/playwright:v1.40.1-jammy
-
-# # Set the working directory
-# WORKDIR /app
-
-# # Copy package.json and package-lock.json
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install
-
-# RUN npx playwright install-deps
-
-# # Copy the rest of the application files
-# COPY . .
-
-# # Set the entry point for the container
-# CMD ["npx", "playwright", "test"]
 
 
 
