@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docker-build-test": "docker build -f Dockerfile -t test305/automation:latest .",
-    "docker-run-test": "docker run --rm -t --network host test305/automation:latest",
-    "docker-compose-up": "docker-compose -f ./docker-compose.test.yml up --build"
+    "test": "playwright test"
   },
   "keywords": [],
   "author": "",

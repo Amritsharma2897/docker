@@ -19,7 +19,7 @@ RUN npx playwright install-deps
 COPY . .
 
 # Set the entry point for the container
-CMD ["npx", "playwright", "test"]
+CMD ["npx", "test"]
 
 
 
