@@ -1,6 +1,3 @@
-# # filename: dockerfile
-# filename: dockerfile
-
 # Get the latest version of Playwright
 FROM mcr.microsoft.com/playwright:v1.40.1-jammy
 
@@ -19,7 +16,7 @@ RUN npx playwright install-deps
 COPY . .
 
 # Set the entry point for the container
-CMD ["npx", "test"]
+CMD ["npx", "playwright", "test"]
 
 
 
