@@ -145,6 +145,7 @@ jobs:
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
+    if: always()
     needs: [playwright-tests]
     runs-on: ubuntu-latest
     steps:
@@ -167,7 +168,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter=html,github ./blob-reports 
+        run: npx playwright merge-reports --reporter=html ./blob-reports 
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
