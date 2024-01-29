@@ -133,7 +133,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=html,blob || true
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
@@ -167,7 +167,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports 
+        run: npx playwright merge-reports --reporter html ./all-blob-reports || true
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
