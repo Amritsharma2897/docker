@@ -12,13 +12,17 @@ const { blob } = require('stream/consumers');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
+  shard: {
+    total: 4, // Set the total shards here
+    current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
+  },
   testDir: './tests',
   reporter: [
     ['blob'],
     ['html'],
     ['list'],
-    ['dot']
   ],
+  // Use an environment variable to specify the current shard
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
