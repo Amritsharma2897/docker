@@ -18,7 +18,7 @@ module.exports = defineConfig({
   },
   testDir: './tests',
   reporter: [
-    ['blob',{outputFilename: 'blob-report'}],
+    ['blob'],
     ['html', {
     outputFolder: 'playwright-report',
     attachmentsDir: './playwright-report', // Store screenshots within report directory
