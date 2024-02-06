@@ -21,7 +21,7 @@ module.exports = defineConfig({
     ['blob'],
     ['html', {
     outputFolder: 'playwright-report',
-    attachmentsDir: './playwright-report', // Store screenshots within report directory
+    attachmentsDir: 'playwright-report', // Store screenshots within report directory
   }],
     ['list'],
   ],
