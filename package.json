@@ -23,6 +23,7 @@
   },
   "description": "",
   "dependencies": {
+    "concurrently": "^8.2.2",
     "playwright-merge-html-reports": "^0.2.8"
   }
 }

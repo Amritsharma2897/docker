@@ -1,6 +1,6 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
-const { blob } = require('stream/consumers');
+
 
 /**
  * Read environment variables from file.
@@ -18,16 +18,16 @@ module.exports = defineConfig({
   },
   testDir: './tests',
   reporter: [
-    ['blob'],
+    ['blob',{outputFilename: 'blob-report'}],
     ['html', {
     outputFolder: 'playwright-report',
-    attachmentsDir: 'playwright-report', // Store screenshots within report directory
+    attachmentsDir: './playwright-report', // Store screenshots within report directory
   }],
     ['list'],
   ],
   // Use an environment variable to specify the current shard
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
