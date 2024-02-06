@@ -167,10 +167,6 @@ jobs:
           pattern: blob-report-*
           merge-multiple: true
 
-      # Set attachments directory explicitly
-      - name: Set attachments directory
-        run: echo "PLAYWRIGHT_OUTPUT_DIR=./all-blob-reports" >> $GITHUB_ENV    
-
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports 
 
