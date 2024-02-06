@@ -172,7 +172,7 @@ jobs:
         run: echo "PLAYWRIGHT_OUTPUT_DIR=./playwright-report" >> $GITHUB_ENV    
 
       - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports 
+        run: npx playwright merge-reports --reporter html ./all-blob-reports --output playwright-report 
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
