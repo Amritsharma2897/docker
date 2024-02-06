@@ -19,7 +19,10 @@ module.exports = defineConfig({
   testDir: './tests',
   reporter: [
     ['blob'],
-    ['html'],
+    ['html', {
+    outputFolder: 'playwright-report',
+    attachmentsDir: 'playwright-report', // Store screenshots within report directory
+  }],
     ['list'],
   ],
   // Use an environment variable to specify the current shard
@@ -40,6 +43,7 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: "only-on-failure",
   },
 
   /* Configure projects for major browsers */
