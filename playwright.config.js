@@ -20,11 +20,11 @@ module.exports = defineConfig({
   reporter:[['blob',
 {
   outputFolder: 'blob-report',
-  attachmentsDir: 'blob-report'
+  attachmentsDir: './blob-report'
 }],
   ['html', {
     outputFolder: 'playwright-report',
-    attachmentsDir: 'playwright-report', // Store screenshots within report directory
+    attachmentsDir: './playwright-report', // Store screenshots within report directory
   }],
   ['list'],
 ],
