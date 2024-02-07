@@ -18,15 +18,8 @@ module.exports = defineConfig({
   },
   testDir: './tests',
   reporter: [
-    ['blob',{
-    outputFolder: 'playwright-report',
-    attachmentsDir: 'playwright-report',
-    }],
-    ['html', {
-    outputFolder: 'playwright-report',
-    attachmentsDir: 'playwright-report',
-    screenshots: 'all' // Store screenshots within report directory
-  }],
+    ['blob'],
+    ['html'],
     ['list'],
   ],
   // Use an environment variable to specify the current shard
