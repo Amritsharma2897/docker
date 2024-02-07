@@ -24,7 +24,8 @@ module.exports = defineConfig({
     }],
     ['html', {
     outputFolder: 'playwright-report',
-    attachmentsDir: 'playwright-report', // Store screenshots within report directory
+    attachmentsDir: 'playwright-report',
+    screenshots: 'all' // Store screenshots within report directory
   }],
     ['list'],
   ],
