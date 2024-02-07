@@ -17,15 +17,11 @@ module.exports = defineConfig({
     current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
   },
   testDir: './tests',
-  reporter:[['blob',
-{
-  outputFolder: 'playwright-report',
-  attachmentsDir: './playwright-report'
-}],
-  ['html', {
+  reporter:[['blob',{
     outputFolder: 'playwright-report',
-    attachmentsDir: './playwright-report', // Store screenshots within report directory
+    attachmentsDir: './playwright-report',
   }],
+  ['html',{outputFolder: 'playwright-report', attachmentsDir: 'playwright-report'}],
   ['list'],
 ],
   // Use an environment variable to specify the current shard
