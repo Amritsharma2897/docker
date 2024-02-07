@@ -19,8 +19,8 @@ module.exports = defineConfig({
   testDir: './tests',
   reporter:[['blob',
 {
-  outputFolder: 'blob-report',
-  attachmentsDir: './blob-report'
+  outputFolder: 'all-blob-reports',
+  attachmentsDir: './all-blob-reports'
 }],
   ['html', {
     outputFolder: 'playwright-report',
