@@ -17,12 +17,10 @@ module.exports = defineConfig({
     current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
   },
   testDir: './tests',
-  reporter:[['blob',{
-    outputFolder: 'playwright-report',
-    attachmentsDir: './playwright-report',
-  }],
-  ['html',{outputFolder: 'playwright-report', attachmentsDir: 'playwright-report'}],
-  ['list'],
+  reporter:[
+    ['blob'],
+    ['html'],
+    ['list'],
 ],
   // Use an environment variable to specify the current shard
   /* Run tests in files in parallel */
