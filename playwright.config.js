@@ -12,10 +12,10 @@ const { defineConfig, devices } = require('@playwright/test');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  shard: {
-    total: 4, // Set the total shards here
-    current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
-  },
+  // shard: {
+  //   total: 4, // Set the total shards here
+  //   current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
+  // },
   testDir: './tests',
   reporter:[
     ['blob'],
