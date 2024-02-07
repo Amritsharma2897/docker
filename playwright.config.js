@@ -17,7 +17,17 @@ module.exports = defineConfig({
     current: Number(process.env.TEST_SHARD) || 1, // Retrieve from environment or default to 1
   },
   testDir: './tests',
-  reporter: process.env.CI ? 'blob' : 'html',
+  reporter:[['blob',
+{
+  outputFolder: 'blob-report',
+  attachmentsDir: 'blob-report'
+}],
+  ['html', {
+    outputFolder: 'playwright-report',
+    attachmentsDir: 'playwright-report', // Store screenshots within report directory
+  }],
+  ['list'],
+],
   // Use an environment variable to specify the current shard
   /* Run tests in files in parallel */
   fullyParallel: false,
